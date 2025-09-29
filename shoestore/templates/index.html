@@ -1,10 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}Home - Shoe Store{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Welcome to Our Shoe Store</h1>
+    <p>Discover the perfect pair of shoes for every occasion</p>
+</div>
+
+<div class="product-grid">
+    {% for product in products[:6] %}
+        <div class="product-card">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-image">
+            <div class="product-info">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="product-color">Color: {{ product.color }}</p>
+                <p class="product-description">{{ product.description }}</p>
+                <p class="product-sizes">Sizes: {{ product.sizes | join(', ') }}</p>
+                <p class="product-stock">In stock: {{ product.stock }}</p>
+                <div class="product-footer">
+                    <span class="product-price">${{ "%.2f"|format(product.price) }}</span>
+                    {% if product.stock > 0 %}
+                        <form method="get" action="{{ url_for('cart_bp.add_to_cart', product_id=product.id) }}" class="add-to-cart-form">
+                            <select name="size" required>
+                                <option value="">Select size</option>
+                                {% for size in product.sizes %}
+                                    <option value="{{ size }}">{{ size }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn-primary">Buy</button>
+                        </form>
+                    {% else %}
+                        <span class="out-of-stock">Out of stock</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="view-all">
+    <a href="{{ url_for('catalog_bp.catalog') }}" class="btn btn-outline">View All Products</a>
+</div>
+{% endblock %}
