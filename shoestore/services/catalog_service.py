@@ -89,7 +89,7 @@ class CatalogService(BaseService):
                 'category_id': 2
             },
             {
-                'name': 'Converse Chuck Taylor All Star',
+                'name': 'Converse Chuck Taylor',
                 'description': 'Iconic high-top canvas sneakers in classic black',
                 'color': 'Black',
                 'price': 65.00,
