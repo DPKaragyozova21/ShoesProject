@@ -1,13 +1,28 @@
-class CatalogService:
+class BaseService:
+
     def __init__(self):
+        self.next_id = 1
+
+    def get_next_id(self):
+
+        current_id = self.next_id
+        self.next_id += 1
+        return current_id
+
+    def log_action(self, action):
+
+        print(f"[BaseService] {action}")
+
+
+class CatalogService(BaseService):
+    def __init__(self):
+        super().__init__()
         self.products = []
         self.categories = []
-        self.next_id = 1
         self.next_category_id = 1
         self.initialize_categories()
 
     def initialize_categories(self):
-
         categories_data = [
             {'name': 'Дамски обувки'},
             {'name': 'Мъжки обувки'},
@@ -18,17 +33,14 @@ class CatalogService:
             category = {
                 'id': self.next_category_id,
                 'name': cat_data['name'],
-
             }
             self.categories.append(category)
             self.next_category_id += 1
 
     def get_all_categories(self):
-
         return self.categories
 
     def get_category_by_id(self, category_id):
-
         for category in self.categories:
             if category['id'] == category_id:
                 return category
@@ -36,7 +48,6 @@ class CatalogService:
 
     def initialize_sample_data(self):
         sample_products = [
-
             {
                 'name': 'Nike Air Force 1',
                 'description': 'Classic white basketball sneakers with premium leather upper',
@@ -67,8 +78,6 @@ class CatalogService:
                 'sizes': ['35', '36', '37', '38', '39', '40'],
                 'category_id': 1
             },
-
-
             {
                 'name': 'Adidas Stan Smith',
                 'description': 'Legendary white tennis sneakers with green accents',
@@ -139,8 +148,6 @@ class CatalogService:
                 'sizes': ['40', '41', '42', '43', '44', '45'],
                 'category_id': 2
             },
-
-
             {
                 'name': 'Nike Kids Air Force',
                 'description': 'Детски маратонки в бяло и розово',
@@ -168,11 +175,11 @@ class CatalogService:
 
     def add_product(self, product_data):
         product = {
-            'id': self.next_id,
+            'id': self.get_next_id(),
             **product_data
         }
         self.products.append(product)
-        self.next_id += 1
+        self.log_action(f"Product added: {product_data['name']}")
         return product
 
     def get_all_products(self):
@@ -188,15 +195,16 @@ class CatalogService:
         for i, product in enumerate(self.products):
             if product['id'] == product_id:
                 self.products[i] = {'id': product_id, **product_data}
+                self.log_action(f"Product updated: ID {product_id}")
                 return True
         return False
 
     def delete_product(self, product_id):
         self.products = [p for p in self.products if p['id'] != product_id]
+        self.log_action(f"Product deleted: ID {product_id}")
 
     def search_products(self, search='', color='', min_price=None, max_price=None, size='', category_id=None):
         results = self.products
-
 
         if category_id:
             results = [p for p in results if p.get('category_id') == category_id]
@@ -232,8 +240,12 @@ class CatalogService:
         for product in self.products:
             if product['id'] == product_id and product['stock'] >= quantity:
                 product['stock'] -= quantity
+                self.log_action(f"Stock reduced for product ID {product_id}")
                 return True
         return False
+
+    def log_action(self, action):
+        print(f"[CatalogService] {action}")
 
 
 catalog_service = CatalogService()
