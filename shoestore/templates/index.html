@@ -19,7 +19,7 @@
                 <p class="product-sizes">Sizes: {{ product.sizes | join(', ') }}</p>
                 <p class="product-stock">In stock: {{ product.stock }}</p>
                 <div class="product-footer">
-                    <span class="product-price">${{ "%.2f"|format(product.price) }}</span>
+                    <span class="product-price">{{ "%.2f"|format(product.price) }}лв</span>
                     {% if product.stock > 0 %}
                         <form method="get" action="{{ url_for('cart_bp.add_to_cart', product_id=product.id) }}" class="add-to-cart-form">
                             <select name="size" required>

@@ -19,7 +19,7 @@
                         <img src="{{ product.image_url }}" alt="{{ product.name }}" class="admin-product-image">
                         <div>
                             <h4>{{ product.name }}</h4>
-                            <p>{{ product.color }} - ${{ "%.2f"|format(product.price) }}</p>
+                            <p>{{ product.color }} - {{ "%.2f"|format(product.price) }}лв</p>
                             <p>Stock: {{ product.stock }}</p>
                         </div>
                     </div>
