@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, session, redirect, url_for
 from controllers.auth_controller import auth_bp
 from controllers.catalog_controller import catalog_bp
